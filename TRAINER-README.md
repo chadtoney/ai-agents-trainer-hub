@@ -27,6 +27,10 @@ This fork serves as a **trainer collaboration space** to:
 
 ## 👥 Trainer Assignments
 
+**Event:** RockstarAI Presenters - February 2025  
+**Entra ID Group:** `RockstarAIPresentersFeb2025` (all 12 trainers)  
+**Azure RBAC Role:** Cognitive Services OpenAI User (assigned to group by David Yu)
+
 | Trainer | Email | Assigned Lessons |
 |---------|-------|------------------|
 | Brian Zoucha | brian.zoucha@MngEnvMCAP295748.onmicrosoft.com | TBD |
