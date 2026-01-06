@@ -35,6 +35,21 @@ Your Azure OpenAI resource has key-based authentication disabled by policy. You 
 2. **Ensure you have the required role:**  
    You need **"Cognitive Services OpenAI User"** role assigned on your Azure OpenAI resource.
 
+3. **⚠️ CRITICAL: Remove AZURE_OPENAI_API_KEY from environment**  
+   If `AZURE_OPENAI_API_KEY` is set in your `.env` file, the SDK will prefer API key authentication over Microsoft Entra ID, causing the 403 error.
+   
+   **Fix:**
+   - Remove `AZURE_OPENAI_API_KEY` from your `.env` file
+   - Restart your Jupyter kernel
+   - Recreate the `AzureOpenAIChatClient` instance
+   
+   **Verify:**
+   ```python
+   import os
+   print(f"API Key set: {os.environ.get('AZURE_OPENAI_API_KEY') is not None}")
+   # Should print: API Key set: False
+   ```
+
 ---
 
 ### Issue: `401 - PermissionDenied`
@@ -51,10 +66,28 @@ You're successfully authenticating (getting a token), but you don't have the Azu
 
 **Option 1: Request Direct Role Assignment (Recommended)**
 
-Contact David Yu (tenant admin) to assign the role:
+Contact David Yu (tenant admin) to assign the role.
+
+**✅ Solution Used for February 2025 Training:**
+
+David Yu assigned "Cognitive Services OpenAI User" role to the entire trainer group **RockstarAIPresentersFeb2025**, which includes all 12 trainers. This is the recommended approach for training events.
 
 ```powershell
-# Command for David Yu to run:
+# Command David Yu used (group-based assignment):
+$groupObjectId = (Get-AzADGroup -DisplayName "RockstarAIPresentersFeb2025").Id
+$resourceGroup = "your-resource-group"
+$accountName = "your-openai-account"
+
+$cognitiveAccount = Get-AzCognitiveServicesAccount -ResourceGroupName $resourceGroup -Name $accountName
+
+New-AzRoleAssignment `
+    -ObjectId $groupObjectId `
+    -RoleDefinitionName "Cognitive Services OpenAI User" `
+    -Scope $cognitiveAccount.Id
+```
+
+**Alternative (individual user assignment):**
+```powershell
 $userEmail = "your.email@MngEnvMCAP295748.onmicrosoft.com"
 $resourceGroup = "your-resource-group"
 $accountName = "your-openai-account"
