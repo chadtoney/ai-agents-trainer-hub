@@ -25,6 +25,33 @@ This fork serves as a **trainer collaboration space** to:
 
 ---
 
+## 📘 Framework Standardization Decision
+
+**Decision by David Yu:** **Python Agent Framework Only**
+
+For this training, we are standardizing on:
+- ✅ **Python** programming language
+- ✅ **Microsoft Agent Framework (Python)** - `*-python-agent-framework.ipynb` files
+- ✅ **Azure OpenAI** with Microsoft Entra ID authentication (no GitHub Models)
+
+**What we're NOT covering:**
+- ❌ .NET implementations (`*.cs`, `*.md` files)
+- ❌ AutoGen framework (`*-autogen.ipynb` files)
+- ❌ Semantic Kernel framework (`*-semantic-kernel*.ipynb` files)
+- ❌ Azure AI Agent Service (`*-azureaiagent.ipynb` files)
+- ❌ GitHub Models (using Azure OpenAI exclusively)
+
+**Rationale:**
+- Consistent experience across all 12 trainers
+- Faster preparation and delivery
+- Single framework reduces cognitive load for trainees
+- Python Agent Framework is Microsoft's latest recommendation
+- Focus depth over breadth
+
+**Trainer Action:** Only convert and prepare `*-python-agent-framework.ipynb` notebooks for your assigned lessons.
+
+---
+
 ## 👥 Trainer Assignments
 
 **Event:** RockstarAI Presenters - February 2025  
