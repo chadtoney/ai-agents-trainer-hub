@@ -34,6 +34,41 @@ Your Azure OpenAI resource has key-based authentication disabled by policy. You 
 
 2. **Ensure you have the required role:**  
    You need **"Cognitive Services OpenAI User"** role assigned on your Azure OpenAI resource.
+   
+   For **Azure AI Foundry projects** (Lesson 5 RAG), you need:
+   - **"Azure AI User"** role on the Azure AI Foundry **PROJECT** (not the Hub)
+   - This includes the required data actions: 
+     - `Microsoft.CognitiveServices/accounts/AIServices/assets/write` (for file upload)
+     - `Microsoft.CognitiveServices/accounts/AIServices/agents/write` (for agent creation)
+     - `agents/*/read`, `agents/*/action`, `agents/*/delete`
+   
+   **⚠️ IMPORTANT: Hub vs Project**
+   - **Hub**: Parent workspace (e.g., `myFoundryHub`) - permissions here do NOT grant project access
+   - **Project**: Child workspace (e.g., `proj-default`) - **this is where you need the role**
+   - Always assign permissions to the **Project**, not the Hub!
+   
+   **To assign the role via Azure AI Foundry Portal (RECOMMENDED):**
+   1. Navigate to [Azure AI Foundry](https://ai.azure.com)
+   2. Select your **PROJECT** from the list (not the Hub - look for names like `proj-default`)
+   3. Click on the **Agents** page in the left navigation
+   4. If you see the error "Your principal is missing the Azure AI User role", click the **"Fix me"** button
+      - This will automatically assign the Azure AI User role to your account
+   5. **Alternative manual method:** Click **Settings** (left sidebar) → **Permissions** tab → **+ Add member** → Select role: **Azure AI User**
+   6. Wait 5-10 minutes for the role to propagate
+   
+   **Alternative: PowerShell (requires User Access Administrator role):**
+   ```powershell
+   # Get your user ID
+   $userId = (Get-AzADUser -UserPrincipalName "your.email@domain.com").Id
+   
+   # Get your project (update resource group and project name)
+   $project = Get-AzMLWorkspace -ResourceGroupName "YOUR_RESOURCE_GROUP" -Name "YOUR_PROJECT_NAME"
+   
+   # Assign the Azure AI User role (not Azure AI Developer)
+   New-AzRoleAssignment -ObjectId $userId -RoleDefinitionName "Azure AI User" -Scope $project.Id
+   ```
+   
+   **Note:** Role assignments may take 5-10 minutes to propagate. You may need to clear your credential cache or restart your Python kernel after assignment.
 
 3. **⚠️ CRITICAL: Remove AZURE_OPENAI_API_KEY from environment**  
    If `AZURE_OPENAI_API_KEY` is set in your `.env` file, the SDK will prefer API key authentication over Microsoft Entra ID, causing the 403 error.
@@ -49,6 +84,102 @@ Your Azure OpenAI resource has key-based authentication disabled by policy. You 
    print(f"API Key set: {os.environ.get('AZURE_OPENAI_API_KEY') is not None}")
    # Should print: API Key set: False
    ```
+
+---
+
+### Issue: `PermissionDenied` on Azure AI Foundry (Lesson 5 RAG)
+
+**Full Error:**
+```
+ClientAuthenticationError: (PermissionDenied) The principal `user@domain.com` lacks the required data action `Microsoft.CognitiveServices/accounts/AIServices/assets/write` to perform `POST /api/projects/{projectName}/files` operation.
+```
+
+**Root Cause:**  
+You don't have the required role on your Azure AI Foundry **PROJECT** to upload files and create vector stores.
+
+**Solution:**
+
+1. **Assign "Azure AI User" role on your PROJECT (not Hub):**
+   - Navigate to [Azure AI Foundry](https://ai.azure.com)
+   - Select your **PROJECT** (e.g., `proj-default`) - **NOT the Hub**
+   - Click on **Agents** in the left navigation
+   - If you see "Your principal is missing the Azure AI User role", click **"Fix me"**
+   - This automatically assigns the role to your account
+   
+   **Alternative manual method:**
+   - Click **Settings** → **Permissions**
+   - Click **+ Add member**
+   - Search for your user email
+   - Select role: **Azure AI User**
+   - Click **Add**
+   
+   **Common mistake:** Assigning the role to the Hub instead of the Project won't work!
+
+2. **Wait 5-10 minutes** for the role assignment to propagate
+
+3. **Use `DefaultAzureCredential` for authentication:**
+   ```python
+   from azure.identity.aio import DefaultAzureCredential
+   from agent_framework.azure import AzureAIAgentClient
+   
+   credential = DefaultAzureCredential()
+   chat_client = AzureAIAgentClient(credential=credential)
+   ```
+
+4. **Verify the fix:**
+   - Re-run the notebook cell that uploads files
+   - You should now see: "Uploaded file, file ID: file-..."
+
+**Note:** `DefaultAzureCredential` works better than `AzureCliCredential` on Windows due to DLL issues with Azure CLI.
+
+---
+
+### Issue: Lesson 5 SDK Confusion - `AgentsClient` vs `AIProjectClient`
+
+**Symptom:**
+```python
+AttributeError: 'AgentsOperations' object has no attribute 'files'
+```
+
+**Root Cause:**  
+There are two different client types for Azure AI Agents, and the docs can be confusing:
+- `AIProjectClient` from `azure-ai-projects` - for managing agents (create/list/delete agents)
+- `AgentsClient` from `azure-ai-agents` - for agent conversations (files, threads, messages, runs)
+
+**Solution for Lesson 5 RAG:**
+
+Use `AgentsClient` directly from `azure.ai.agents`:
+
+```python
+from azure.identity import DefaultAzureCredential
+from azure.ai.agents import AgentsClient
+from azure.ai.agents.models import FilePurpose, FileSearchTool, ListSortOrder
+
+agents_client = AgentsClient(
+    endpoint=os.environ.get("PROJECT_ENDPOINT") or os.environ.get("AZURE_AI_PROJECT_ENDPOINT"),
+    credential=DefaultAzureCredential(),
+)
+
+# Now you have access to:
+# - agents_client.files.upload_and_poll()
+# - agents_client.vector_stores.create_and_poll()
+# - agents_client.create_agent()
+# - agents_client.threads.create()
+# - agents_client.messages.create()
+# - agents_client.runs.create_and_process()
+```
+
+**Don't use:**
+```python
+# ❌ Wrong - AIProjectClient.agents is for management operations only
+from azure.ai.projects import AIProjectClient
+project_client = AIProjectClient(...)
+project_client.agents.files  # This doesn't exist!
+```
+
+**Environment Variables Needed:**
+- `PROJECT_ENDPOINT` or `AZURE_AI_PROJECT_ENDPOINT` - Your Azure AI Foundry project endpoint
+- `AZURE_AI_MODEL_DEPLOYMENT_NAME` - Model deployment name (e.g., "gpt-4o-mini")
 
 ---
 
