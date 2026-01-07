@@ -195,7 +195,38 @@ except Exception as e:
 
 ---
 
-## 🛠️ Azure CLI Issues
+## � Package Compatibility Issues
+
+### Issue: Lesson 5 - `agent-framework-azure-ai` MCP Conflict
+
+**Symptoms:**
+```python
+AttributeError: module 'mcp.types' has no attribute 'ToolUseContent'
+```
+
+**Root Cause:**  
+Incompatibility between `agent-framework-azure-ai` (required for Lesson 5 RAG) and `mcp[cli]` package versions.
+
+**Current Status:** **KNOWN ISSUE** (as of January 2026)
+
+**Workaround Options:**
+
+1. **Skip Lesson 5 for now** - Focus on Lessons 12-13 (your teaching assignments)
+2. **Use alternative RAG implementation** - ChromaDB version (`05-python-chromadb.ipynb`)
+3. **Wait for package updates** - Monitor agent-framework releases
+
+**Azure AI Foundry Requirements for Lesson 5:**
+- `AZURE_AI_PROJECT_ENDPOINT` - Your Azure AI Foundry project endpoint
+- `AZURE_AI_MODEL_DEPLOYMENT_NAME` - Model deployment name (e.g., gpt-4o-mini)
+- Azure AI Foundry Hub & Project created
+- Vector store capabilities enabled
+
+**Recommended Path:**  
+Given the dependency conflict and complexity, prioritize **Lessons 12-13** (Context Engineering & Agent Memory) for training prep. Lesson 5 RAG concepts can be covered conceptually with slides/demos without hands-on lab.
+
+---
+
+## �🛠️ Azure CLI Issues
 
 ### Issue: Azure CLI DLL Import Errors
 
