@@ -1,3 +1,6 @@
 * text=auto eol=lf
 *.{cmd,[cC][mM][dD]} text eol=crlf
 *.{bat,[bB][aA][tT]} text eol=crlf
+
+# Jupyter Notebooks - strip outputs on diff for security and cleaner git history
+*.ipynb filter=nbstripout diff=jupyternotebook merge=jupyternotebook

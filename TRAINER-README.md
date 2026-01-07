@@ -52,7 +52,37 @@ For this training, we are standardizing on:
 
 ---
 
-## 👥 Trainer Assignments
+## � Security Policy: No Notebook Outputs in Git
+
+**CRITICAL:** Never commit notebook outputs to this repository.
+
+**Why:**
+- 🚨 **Security Risk**: Cell outputs can contain API keys, credentials, endpoints
+- 📊 **Repository Bloat**: Outputs make git history large and slow
+- 🔍 **Review Difficulty**: Output diffs obscure actual code changes
+- ♻️ **Unnecessary**: Outputs regenerate when running notebooks locally
+
+**Required Actions Before Every Commit:**
+
+```powershell
+# Clear outputs from ALL modified notebooks before committing
+jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace **/*-python-agent-framework.ipynb
+```
+
+**Or use this Python one-liner:**
+```powershell
+# Clear all outputs from a specific notebook
+python -c "import json; nb = json.load(open('path/to/notebook.ipynb', encoding='utf-8')); [cell.update({'outputs': [], 'execution_count': None}) if cell.get('cell_type') == 'code' else None for cell in nb['cells']]; json.dump(nb, open('path/to/notebook.ipynb', 'w', encoding='utf-8'), indent=1)"
+```
+
+**GitHub Push Protection**: GitHub will block pushes containing secrets. If this happens:
+1. `git reset HEAD~1` to undo the commit
+2. Clear outputs from the affected notebook(s)
+3. Recommit and push
+
+---
+
+## �👥 Trainer Assignments
 
 **Event:** RockstarAI Presenters - February 2025  
 **Entra ID Group:** `RockstarAIPresentersFeb2025` (all 12 trainers)  
