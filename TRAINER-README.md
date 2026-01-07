@@ -27,28 +27,45 @@ This fork serves as a **trainer collaboration space** to:
 
 ## 📘 Framework Standardization Decision
 
-**Decision by David Yu:** **Python Agent Framework Only**
+**Decision by David Yu:** **Microsoft Agent Framework (Python) + Semantic Kernel (Python)**
 
 For this training, we are standardizing on:
 - ✅ **Python** programming language
-- ✅ **Microsoft Agent Framework (Python)** - `*-python-agent-framework.ipynb` files
+- ✅ **Microsoft Agent Framework (Python)** - Primary framework (`*-python-agent-framework.ipynb` files)
+- ✅ **Semantic Kernel (Python)** - Acceptable alternative (`*-semantic-kernel*.ipynb` files)
 - ✅ **Azure OpenAI** with Microsoft Entra ID authentication (no GitHub Models)
 
 **What we're NOT covering:**
 - ❌ .NET implementations (`*.cs`, `*.md` files)
 - ❌ AutoGen framework (`*-autogen.ipynb` files)
-- ❌ Semantic Kernel framework (`*-semantic-kernel*.ipynb` files)
 - ❌ Azure AI Agent Service (`*-azureaiagent.ipynb` files)
 - ❌ GitHub Models (using Azure OpenAI exclusively)
 
-**Rationale:**
-- Consistent experience across all 12 trainers
-- Faster preparation and delivery
-- Single framework reduces cognitive load for trainees
-- Python Agent Framework is Microsoft's latest recommendation
-- Focus depth over breadth
+**Why Both Microsoft Agent Framework AND Semantic Kernel?**
 
-**Trainer Action:** Only convert and prepare `*-python-agent-framework.ipynb` notebooks for your assigned lessons.
+Per David Yu's clarification:
+> "Semantic Kernel and AutoGen merged into Microsoft Agent Framework so that's the focus. However, it's not truly merged yet, I would assume (I haven't looked into it myself yet). They're probably going to show as two different frameworks, so for the training either is fine."
+
+**Key Points:**
+- Microsoft Agent Framework is the **convergence point** for Semantic Kernel and AutoGen
+- The merge is **in progress but not complete** - they appear as separate frameworks
+- Both frameworks are **acceptable** since they're part of the same evolution path
+- Focus is on **Python-based agentic frameworks** from Microsoft
+
+**Lessons Using Each Framework:**
+
+| Framework | Lessons |
+|-----------|---------|
+| Microsoft Agent Framework | 1-4, 7-8, 14 |
+| Semantic Kernel | 9-13 |
+| Azure AI Agents SDK | 5 (RAG) |
+| Browser-Use | 15 |
+
+**Rationale:**
+- Consistent experience with Microsoft's agent framework family
+- Flexibility for lessons where only one framework has examples
+- Focus depth over breadth while respecting lesson design
+- All frameworks use Python (no .NET)
 
 ---
 
@@ -90,19 +107,17 @@ python -c "import json; nb = json.load(open('path/to/notebook.ipynb', encoding='
 
 | Trainer | Email | Assigned Lessons |
 |---------|-------|------------------|
-| Brian Zoucha | brian.zoucha@MngEnvMCAP295748.onmicrosoft.com | TBD |
-| Cameron Jackson | cameron.jackson@MngEnvMCAP295748.onmicrosoft.com | TBD |
+| Cameron Jackson | cameron.jackson@MngEnvMCAP295748.onmicrosoft.com | **01 (Intro), 03 (Design Patterns)** |
 | **Chad Toney** | chad.toney@MngEnvMCAP295748.onmicrosoft.com | **12 (Context), 13 (Memory)** |
-| David Yu | TBD | TBD |
-| John Spinella | john.spinella@MngEnvMCAP295748.onmicrosoft.com | TBD |
+| David Yu | TBD | **00 (Setup), 06 (Trustworthy), 10 (Production), 15 (Browser Use)** |
+| John Spinella | john.spinella@MngEnvMCAP295748.onmicrosoft.com | **02 (Frameworks), 14 (MAF)** |
+| Narasimhan Kidambi | kidambi@MngEnvMCAP295748.onmicrosoft.com | **09 (Metacognition), 11 (Protocols)** |
+| Paul Cho | paul.cho@MngEnvMCAP295748.onmicrosoft.com | **04 (Tool Use), 05 (Agentic RAG)** |
+| Seth Brandes | seth.brandes@MngEnvMCAP295748.onmicrosoft.com | **07 (Planning), 08 (Multi-Agent)** |
+| Brian Zoucha | brian.zoucha@MngEnvMCAP295748.onmicrosoft.com | TBD |
 | Kesha Brooks | kesha.brooks@MngEnvMCAP295748.onmicrosoft.com | TBD |
-| Narasimhan Kidambi | kidambi@MngEnvMCAP295748.onmicrosoft.com | TBD |
-| Paul Cho | paul.cho@MngEnvMCAP295748.onmicrosoft.com | TBD |
 | Phillip Bracher | phillip.bracher@MngEnvMCAP295748.onmicrosoft.com | TBD |
-| Seth Brandes | seth.brandes@MngEnvMCAP295748.onmicrosoft.com | TBD |
 | +2 more | TBD | TBD |
-
-> **Note:** Update lesson assignments as they're confirmed
 
 ---
 
