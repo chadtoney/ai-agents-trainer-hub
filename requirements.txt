@@ -1,10 +1,14 @@
-# Azure AI & Identity
+# Azure AI & Identity & Monitoring
 azure-ai-inference
 azure-ai-projects
 azure-search-documents
+azure-monitor-opentelemetry
+azure-core
+azure-identity
 
 # Microsoft Agent Framework
-agent-framework
+agent-framework==1.0.0b260123
+agent-framework-azure-ai==1.0.0b260123
 a2a-sdk
 
 # AutoGen Framework
