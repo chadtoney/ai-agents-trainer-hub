@@ -544,6 +544,50 @@ Before the training event, verify:
 
 ---
 
+## 📦 Python Package Issues
+
+### Issue: `ImportError: cannot import name 'AIFunction' from 'agent_framework'`
+
+**Affected notebooks:** `04-python-agent-framework.ipynb` and other notebooks that use `agent_framework.azure`
+
+**Full Error:**
+```
+ImportError: cannot import name 'AIFunction' from 'agent_framework'
+```
+or variations like:
+```
+ImportError: cannot import name 'ChatAgent' from 'agent_framework'
+```
+
+**Root Cause:**  
+`agent-framework-core` and `agent-framework-azure-ai` must be installed at the **same version**. If `agent-framework-core` is upgraded (e.g. via `pip install agent-framework-core -U`) while `agent-framework-azure-ai` stays at an older version, the two packages become incompatible — `azure-ai` will try to import symbols that were renamed or removed in the newer core.
+
+Specifically, `agent-framework-core >= 1.0.0b260212` restructured its API and removed `AIFunction`, `ChatAgent`, and other classes that `agent-framework-azure-ai==1.0.0b260123` depends on.
+
+**Solution:**  
+Pin both packages to the same compatible version:
+
+```bash
+pip install agent-framework-core==1.0.0b260123 agent-framework-azure-ai==1.0.0b260123
+```
+
+Then restart your Jupyter kernel.
+
+**Verify the fix:**
+```python
+from agent_framework.azure import AzureAIProjectAgentProvider
+print("Import successful")
+```
+
+**Note on `pywin32` (Windows only):**  
+If you ran a failed install inside a live kernel on Windows, `pywin32` may be left in a broken state (partially uninstalled while its DLL was locked). Symptoms: `ModuleNotFoundError: No module named 'pywintypes'`. Fix by reinstalling from a terminal (not inside the notebook):
+
+```bash
+pip install pywin32 --force-reinstall --no-deps
+```
+
+---
+
 ## 📚 Useful Documentation
 
 - [Keyless Authentication with Azure AI](https://learn.microsoft.com/azure/developer/ai/keyless-connections?tabs=python%2Cazure-cli)
@@ -553,5 +597,5 @@ Before the training event, verify:
 
 ---
 
-**Last Updated:** January 6, 2026  
+**Last Updated:** February 18, 2026  
 **Maintained by:** Chad Toney
