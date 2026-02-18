@@ -1,0 +1,30 @@
+# Agent Scratchpad
+
+## User Preferences
+
+- [2026-02-17 23:15:19] Preferred destination: Greek islands
+
+- [2026-02-17 23:15:02] Loves beach destinations, enjoys water sports, exploring local markets, and trying authentic cuisine. Budget: $3000 per person for a week.
+
+- [2026-01-21 08:39:29] Preferred destination: Greek islands
+
+- [2026-01-21 08:39:02] Loves beach destinations with great food and culture, enjoys water sports, exploring local markets, and trying authentic cuisine. Budget: $3000 per person for a week.
+
+- [2025-09-16 16:30:39] Budget: $3000 per person for a week
+
+- [2025-09-16 16:30:39] Enjoys water sports, exploring local markets, and trying authentic cuisine
+
+- [2025-09-16 16:30:39] Loves beach destinations with great food and culture
+
+## Completed Tasks
+
+- [2026-02-17 23:15:23] Created Greek Islands itinerary for beach and cultural vacation.
+
+- [2026-01-21 08:39:31] Created new itinerary for Greek islands vacation.
+
+- [2026-01-21 08:39:06] Created detailed itinerary for Bali beach vacation.
+
+- [2025-09-16 16:30:52] Created Greek Islands itinerary for beach vacation
+
+- [2025-09-16 16:30:46] Created Bali itinerary for beach vacation
+
